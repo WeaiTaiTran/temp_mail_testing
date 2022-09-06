@@ -47,12 +47,13 @@ except :
     print("Created Test Log")
 
 def updateLog(log):
-    cursorTestLog.execute(f"UPDATE test_log SET {log['key']}={log['value']}")
+    cursorTestLog.execute(f"UPDATE test_log SET {log['key']}='{log['value']}' WHERE state_token='{log['stateToken']}'")
     connectSqlTestLog.commit()
     
 def createLog(log):
     dateCreate = createTimeStamp()
     cursorTestLog.execute(f"INSERT INTO test_log(state_token, date_created) VALUES(?, ?)", (log['stateToken'], dateCreate))
+    connectSqlTestLog.commit()
     res = cursorTestLog.execute(f"SELECT * FROM test_log WHERE state_token='{log['stateToken']}'").fetchall()
     print(res)
     
@@ -104,5 +105,3 @@ def queryDB(type):
 #* TYPE 1 : Created Mail - Invite ClassRoom BY Email
 #* TYPE 2 : Created Mail - Invite ORG BY Email
 #* TYPE 3 : Affter TYPE 1 and TYPE 2 Done
-
-print(queryDB(1))
