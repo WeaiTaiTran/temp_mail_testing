@@ -266,7 +266,8 @@ def addSubjectPermissions(listMail, subjectID):
         "emails": listMail,
         "subject_id": subjectID
     }
-    response = requests.post(url=API_ORG_STUDENT, headers=headers.headers, json={"query": query, "variables": variables})
+    response = requests.post(url=API_ORG_LIBRARY, headers=headers.headers, json={"query": query, "variables": variables})
+    print(response.json())
     return response.json()
 
 def createSubject(subjectName):
