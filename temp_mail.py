@@ -15,7 +15,8 @@ QUANLITY_ORG_CLASSROOM = 200
 url = "https://www.1secmail.com/api/v1"
 
 def create_mail(amount):
-    created_account = "?action=genRandomMailbox&count={amount}"
+    print("Created Mail")
+    created_account = f"?action=genRandomMailbox&count={amount}"
     api = f"{url}/{created_account}"
     response = requests.get(url=api)
     return response.json()
