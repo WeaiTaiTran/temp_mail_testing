@@ -40,7 +40,7 @@ try :
     resTestLog = cursorTestLog.execute("SELECT * FROM test_log")
 except :
     cursorTestLog.execute("CREATE TABLE test_log(id INTEGER PRIMARY KEY, date_created, log)")
-    print("Created Mail Box")
+    print("Created Test Log")
 
 def createMailProfile(profile):
     dateCreate = createTimeStamp()
@@ -74,8 +74,21 @@ def importMailLetter(letter, emailToken):
     res = cursorMailBox.execute(f"SELECT * FROM mail_box WHERE id={letter['id']}").fetchall()
     print(res)
     
+def queryDB(type):
+    if type == 1:
+        return cursor.execute("SELECT * FROM profile").fetchall()
+    elif type == 2: 
+        return cursorMailBox.execute("SELECT * FROM mail_box").fetchall()
+    elif type == 3:
+        return cursorTestLog.execute("SELECT * FROM test_log").fetchall()
+    else:
+        return {
+            "status": "error type"
+        }
 # TODO : Find Solution To Test Database
 
 #* TYPE 1 : Created Mail - Invite ClassRoom BY Email
 #* TYPE 2 : Created Mail - Invite ORG BY Email
 #* TYPE 3 : Affter TYPE 1 and TYPE 2 Done
+
+print(queryDB(2))
