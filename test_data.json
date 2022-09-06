@@ -15,5 +15,7 @@
         "account":"1zzd9jyudu8g",
         "domain":"qiott.com",
         "type": 1
-    }
+    },
+    "get_mail_box_id": ["1zzd9jyudu8g", "qiott.com"],
+    "access_mail_box": ["1zzd9jyudu8g", "qiott.com", 5817139]
 }
