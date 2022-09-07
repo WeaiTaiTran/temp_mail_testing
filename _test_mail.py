@@ -9,7 +9,7 @@ import unittest
 from cryptohash import sha1
 
 
-LIMIT = 200
+LIMIT = 1 # 200
 TIME = 10
 
 class MAIL_TYPE(Enum):
@@ -35,6 +35,12 @@ class ORG(Enum):
 class Test_Status(Enum):
     FAIL = "FAIL"
     PASS = "PASS"
+    
+class Test_Case(Enum):
+    TEST_CASE_1 = "case_invite_classroom"
+    TEST_CASE_2 = "case_invite_org"
+    TEST_CASE_3 = "case_invite_classroom_org"
+    TEST_CASE_4 = "case_add_subject_permission"
 
 STATE_TOKEN = sha1(f"Testing Mail : {time.time()}")
 print(STATE_TOKEN)
@@ -106,7 +112,7 @@ def excute_mail(listTupleMail):
 class TestingMail(unittest.TestCase):
     
     def test_case_1(self):
-        amount = 1
+        amount = LIMIT
         listMail = importProfile(MAIL_TYPE.MAIL_INVITE_NOT_ACCOUNT.value, amount, ORG.DEACTIVE.value)
         graphQL.SendMail(Identify.classRoomID.value, listMail)
         sleep(TIME)
@@ -119,19 +125,20 @@ class TestingMail(unittest.TestCase):
             self.assertEqual(amount, len(eduplaxCount))
             self.assertEqual(amount, len(eduplaxCount2))
         except:
-            return sqlite.updateLog({
-                "key": "case_invite_classroom", 
+            sqlite.updateLog({
+                "key": Test_Case.TEST_CASE_1.value, 
                 "value" : Test_Status.FAIL.value,
                 "stateToken": STATE_TOKEN
             })
+            return self.fail("Số lượng mail không đạt yêu cầu")
         return sqlite.updateLog({
-                "key": "case_invite_classroom",
+                "key": Test_Case.TEST_CASE_1.value,
                 "value": Test_Status.PASS.value,
                 "stateToken": STATE_TOKEN
             })
     
     def test_case_2(self):
-        amount = 1
+        amount = LIMIT
         stateToken = STATE_TOKEN
         listMail = importProfile(MAIL_TYPE.MAIL_INVITE_ORG_NOT_ACCOUNT.value, amount, ORG.ACTIVE.value)
         graphQL.addOrganizationUsers(listMail)
@@ -142,19 +149,20 @@ class TestingMail(unittest.TestCase):
         try:
             self.assertEqual(amount, len(eduplaxCount))
         except:
-            return sqlite.updateLog({
-                "key": "case_invite_org", 
+            sqlite.updateLog({
+                "key": Test_Case.TEST_CASE_2.value, 
                 "value" : Test_Status.FAIL.value,
                 "stateToken": STATE_TOKEN
             })
+            return self.fail("Số lượng mail không đạt yêu cầu")
         return sqlite.updateLog({
-                "key": "case_invite_org",
+                "key": Test_Case.TEST_CASE_2.value,
                 "value": Test_Status.PASS.value,
                 "stateToken": STATE_TOKEN
             })
         
     def test_case_3(self):
-        amount = 1
+        amount = LIMIT
         stateToken = STATE_TOKEN
         getListMail = sqlite.cursor.execute(f"SELECT email FROM profile WHERE type={MAIL_TYPE.MAIL_INVITE_ORG_HAVE_ACCOUNT.value} and state_token='{stateToken}' LIMIT {amount}").fetchall()
         if len(getListMail) > 0:
@@ -167,19 +175,20 @@ class TestingMail(unittest.TestCase):
         try:
             self.assertEqual(amount, len(eduplaxCount))
         except:
-            return sqlite.updateLog({
-                "key": "case_invite_classroom_org", 
+            sqlite.updateLog({
+                "key": Test_Case.TEST_CASE_3.value, 
                 "value" : Test_Status.FAIL.value,
                 "stateToken": STATE_TOKEN
             })
+            return self.fail("Số lượng mail không đạt yêu cầu")
         return sqlite.updateLog({
-                "key": "case_invite_classroom_org",
+                "key": Test_Case.TEST_CASE_3.value,
                 "value": Test_Status.PASS.value,
                 "stateToken": STATE_TOKEN
             })
         
     def test_case_4(self):
-        amount = 1
+        amount = LIMIT
         stateToken = STATE_TOKEN
         getListMail = sqlite.cursor.execute(f"SELECT email FROM profile WHERE type={MAIL_TYPE.MAIL_INVITE_ORG_HAVE_ACCOUNT.value} and state_token='{stateToken}' LIMIT {amount}").fetchall()
         if len(getListMail) > 0:
@@ -192,13 +201,14 @@ class TestingMail(unittest.TestCase):
         try:
             self.assertEqual(amount, len(eduplaxCount))
         except:
-            return sqlite.updateLog({
-                "key": "case_add_subject_permission", 
+            sqlite.updateLog({
+                "key": Test_Case.TEST_CASE_4.value, 
                 "value" : Test_Status.FAIL.value,
                 "stateToken": STATE_TOKEN
             })
+            return self.fail("Số lượng mail không đạt yêu cầu")
         return sqlite.updateLog({
-                "key": "case_add_subject_permission",
+                "key": Test_Case.TEST_CASE_4.value,
                 "value": Test_Status.PASS.value,
                 "stateToken": STATE_TOKEN
             })
